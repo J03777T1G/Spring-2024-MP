@@ -1,5 +1,5 @@
 const http = require('http');
-const github = require('@octokit/rest')();
+const github = require('@octokit/rest');
 
 // Set up GitHub authentication (replace placeholders with your GitHub credentials)
 github.authenticate({
