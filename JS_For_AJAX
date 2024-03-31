@@ -1,0 +1,30 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to make an AJAX request
+    function makeRequest(method, url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    callback(null, xhr.responseText);
+                } else {
+                    callback(xhr.status);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // Example AJAX request
+    document.getElementById("loadDataBtn").addEventListener("click", function() {
+        makeRequest("GET", "data.json", function(error, response) {
+            if (error) {
+                console.error("Error:", error);
+            } else {
+                var data = JSON.parse(response);
+                console.log("Data:", data);
+                // Update the webpage with the received data
+            }
+        });
+    });
+});
