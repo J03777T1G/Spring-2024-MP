@@ -1,37 +1,49 @@
-const http = require('http');
-const github = require('@octokit/rest');
+const SerialPort = require('serialport');
+const WebSocket = require('ws');
 
-// Set up GitHub authentication (replace placeholders with your GitHub credentials)
-github.authenticate({
-  type: 'basic',
-  username: 'J03777T1G',
-  password: '!Bannaking77'
+// Define the serial port configuration
+const port = new SerialPort('COM3', {
+  baudRate: 9600 // Adjust baud rate according to your Arduino configuration
 });
 
-// Define a function to fetch repository information
-function fetchRepositoryInfo(owner, repo) {
-  return github.repos.get({ owner, repo });
-}
+// Create a WebSocket server
+const wss = new WebSocket.Server({ port: 8080 }); // WebSocket server listens on port 8080
 
-// Create an HTTP server
-const server = http.createServer((req, res) => {
-  // Fetch repository information
-  fetchRepositoryInfo('J03777T1G', 'Spring-2024-MP')
-    .then(response => {
-      // Send the repository information as JSON
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(response.data));
-    })
-    .catch(error => {
-      // Handle errors
-      console.error('Error fetching repository info:', error);
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
-      res.end('Internal Server Error');
-    });
+// Open the serial port and start reading data
+port.on('open', () => {
+  console.log('Serial port opened');
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+port.on('error', (err) => {
+  console.error('Error:', err.message);
+});
+
+port.on('data', (data) => {
+  // Convert buffer data to string
+  const serialData = data.toString().trim();
+
+  // Broadcast serial data to all connected WebSocket clients
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(serialData);
+    }
+  });
+
+  // Log serial data
+  console.log('Serial data:', serialData);
+});
+
+// WebSocket server event handlers
+wss.on('connection', (ws) => {
+  console.log('WebSocket client connected');
+
+  // Handle WebSocket client messages (if needed)
+  ws.on('message', (message) => {
+    console.log('Received message from WebSocket client:', message);
+  });
+
+  // Handle WebSocket client disconnection (if needed)
+  ws.on('close', () => {
+    console.log('WebSocket client disconnected');
+  });
 });
