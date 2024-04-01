@@ -9,7 +9,7 @@ const wss = new WebSocket.Server({ port: 8080 }); // WebSocket server listens on
 
 // Open the serial port and start reading data
 port.on('open', () => {
-  console.log('Serial port opened');
+  console.log('Device Monitor Begun');
 });
 
 port.on('error', (err) => {
@@ -28,7 +28,7 @@ port.on('data', (data) => {
   });
 
   // Log serial data
-  console.log('Serial data:', serialData);
+  console.log('E-Alert:', serialData);
 });
 
 // WebSocket server event handlers
