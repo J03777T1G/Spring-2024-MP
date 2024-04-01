@@ -2,7 +2,7 @@ const { SerialPort } = require('serialport');
 const WebSocket = require('ws');
 
 // Define the serial port configuration
-const port = new SerialPort({ path: 'COM3', baudRate: 9600 });
+const port = new SerialPort({ path: 'COM3', baudRate: 115200 });
 
 // Create a WebSocket server
 const wss = new WebSocket.Server({ port: 8080 }); // WebSocket server listens on port 8080
