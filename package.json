@@ -1,0 +1,22 @@
+{
+  "name": "surestep-monitoring-software",
+  "version": "1.0.0",
+  "description": "SureStep+ Monitoring Software for Venture Mobility Co.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "http": "^0.0.1-security",
+    "serialport": "^12.0.0",
+    "ws": "^8.16.0"
+  },
+  "keywords": [
+    "SureStep",
+    "monitoring",
+    "Venture Mobility"
+  ],
+  "author": "J03777T1G",
+  "license": "MIT"
+}
