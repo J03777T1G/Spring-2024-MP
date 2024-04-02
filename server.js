@@ -6,8 +6,11 @@ const fs = require('fs');
 // Define the serial port configuration
 const port = new SerialPort({ path: 'COM3', baudRate: 115200 });
 
-// Create a WebSocket server
-const wss = new WebSocket.Server();
+// Create an HTTP server
+const server = http.createServer();
+
+// Create a WebSocket server using the HTTP server
+const wss = new WebSocket.Server({ server });
 
 // Open the serial port and start reading data
 port.on('open', () => {
@@ -43,23 +46,8 @@ port.on('data', (data) => {
 });
 
 // Serve the serial data file
-const server = http.createServer((req, res) => {
-  fs.readFile('serialData.json', (err, data) => {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error reading serial data file');
-    }
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(data);
-  });
-});
-
-// Use the PORT environment variable or default to 3000 if it's not set
-const PORT = process.env.PORT || 3000;
-
-// Start the server and listen on the specified port
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(process.env.PORT || 8080, () => {
+  console.log(`Server is running on port ${server.address().port}`);
 });
 
 // WebSocket server event handlers
