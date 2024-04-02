@@ -1,44 +1,60 @@
 const { SerialPort } = require('serialport');
 const WebSocket = require('ws');
+const http = require('http');
 const fs = require('fs');
 
-// Check the environment variable for data source
-const dataSource = process.env.DATA_SOURCE || 'serial'; // Default to serial port
-
 // Define the serial port configuration
-let port;
-if (dataSource === 'serial') {
-  port = new SerialPort({ path: 'COM3', baudRate: 115200 });
-}
+const port = new SerialPort({ path: 'COM3', baudRate: 115200 });
 
 // Create a WebSocket server
 const wss = new WebSocket.Server({ port: 8080 }); // WebSocket server listens on port 8080
 
-// Open the serial port and start reading data if data source is serial
-if (dataSource === 'serial') {
-  port.on('open', () => {
-    console.log('Device Monitor Begun');
+// Open the serial port and start reading data
+port.on('open', () => {
+  console.log('Device Monitor Begun');
+});
+
+port.on('error', (err) => {
+  console.error('Error:', err.message);
+});
+
+port.on('data', (data) => {
+  // Convert buffer data to string
+  const serialData = data.toString().trim();
+
+  // Broadcast serial data to all connected WebSocket clients
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(serialData);
+    }
   });
 
-  port.on('error', (err) => {
-    console.error('Error:', err.message);
+  // Log serial data
+  console.log('E-Alert:', serialData);
+  
+  // Write the serial data to a file
+  fs.writeFile('serialData.json', JSON.stringify({ data: serialData }), (err) => {
+    if (err) {
+      console.error('Error writing serial data to file:', err);
+    } else {
+      console.log('Serial data written to file successfully');
+    }
   });
+});
 
-  port.on('data', (data) => {
-    // Convert buffer data to string
-    const serialData = data.toString().trim();
-
-    // Broadcast serial data to all connected WebSocket clients
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(serialData);
-      }
-    });
-
-    // Log serial data
-    console.log('E-Alert:', serialData);
+// Serve the serial data file
+http.createServer((req, res) => {
+  fs.readFile('serialData.json', (err, data) => {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error reading serial data file');
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(data);
   });
-}
+}).listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
+});
 
 // WebSocket server event handlers
 wss.on('connection', (ws) => {
