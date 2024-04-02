@@ -1,35 +1,44 @@
 const { SerialPort } = require('serialport');
 const WebSocket = require('ws');
+const fs = require('fs');
+
+// Check the environment variable for data source
+const dataSource = process.env.DATA_SOURCE || 'serial'; // Default to serial port
 
 // Define the serial port configuration
-const port = new SerialPort({ path: 'COM3', baudRate: 115200 });
+let port;
+if (dataSource === 'serial') {
+  port = new SerialPort({ path: 'COM3', baudRate: 115200 });
+}
 
 // Create a WebSocket server
 const wss = new WebSocket.Server({ port: 8080 }); // WebSocket server listens on port 8080
 
-// Open the serial port and start reading data
-port.on('open', () => {
-  console.log('Device Monitor Begun');
-});
-
-port.on('error', (err) => {
-  console.error('Error:', err.message);
-});
-
-port.on('data', (data) => {
-  // Convert buffer data to string
-  const serialData = data.toString().trim();
-
-  // Broadcast serial data to all connected WebSocket clients
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(serialData);
-    }
+// Open the serial port and start reading data if data source is serial
+if (dataSource === 'serial') {
+  port.on('open', () => {
+    console.log('Device Monitor Begun');
   });
 
-  // Log serial data
-  console.log('E-Alert:', serialData);
-});
+  port.on('error', (err) => {
+    console.error('Error:', err.message);
+  });
+
+  port.on('data', (data) => {
+    // Convert buffer data to string
+    const serialData = data.toString().trim();
+
+    // Broadcast serial data to all connected WebSocket clients
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(serialData);
+      }
+    });
+
+    // Log serial data
+    console.log('E-Alert:', serialData);
+  });
+}
 
 // WebSocket server event handlers
 wss.on('connection', (ws) => {
