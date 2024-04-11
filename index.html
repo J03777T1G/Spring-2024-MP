@@ -30,6 +30,7 @@
         nav ul li a {
             text-decoration: none; /* Remove underline */
             color: rgb(166, 36, 92); /* Change link color */
+            cursor: pointer; /* Change cursor to pointer */
         }
     </style>
 </head>
@@ -40,7 +41,7 @@
     </header>
     <nav>
         <ul>
-            <li><a href="#">Read</a></li>
+            <li><a id="uploadLink">Read</a></li>
             <li><a href="https://jaysontgonzalez.wixsite.com/venture-mobility" target="_blank">Main Website</a></li>
         </ul>
     </nav>
@@ -57,5 +58,14 @@
     <footer>
         <p>&copy; 2024 Venture Mobility Co.</p>
     </footer>
+
+    <!-- Hidden file input field -->
+    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+
+    <script>
+        document.getElementById('uploadLink').addEventListener('click', function() {
+            document.getElementById('csvFileInput').click();
+        });
+    </script>
 </body>
 </html>
