@@ -19,40 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayData(data) {
-        const dataTable = document.getElementById('dataTable');
-        // Clear any existing data
-        dataTable.innerHTML = '';
-
-        // Create table element
         const table = document.createElement('table');
-        table.classList.add('data-table');
-
-        // Create table header
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        const headers = Object.keys(data[0]);
-        headers.forEach(headerText => {
-            const th = document.createElement('th');
-            th.textContent = headerText;
-            headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
-
-        // Create table body
-        const tbody = document.createElement('tbody');
-        data.forEach(rowData => {
+        for (let i = 0; i < data.length; i++) {
             const row = document.createElement('tr');
-            headers.forEach(header => {
+            for (let j = 0; j < data[i].length; j++) {
                 const cell = document.createElement('td');
-                cell.textContent = rowData[header];
+                cell.textContent = data[i][j];
                 row.appendChild(cell);
-            });
-            tbody.appendChild(row);
-        });
-        table.appendChild(tbody);
+            }
+            table.appendChild(row);
+        }
 
-        // Add table to the DOM under the appropriate section
+        // Clear any existing data and add the new table to the DOM
         const section = document.getElementById('usageHistorySection');
         section.innerHTML = '';
         const header = document.createElement('h2');
