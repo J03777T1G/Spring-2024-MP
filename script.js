@@ -19,23 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayData(data) {
-        const table = document.createElement('table');
-        for (let i = 0; i < data.length; i++) {
-            const row = document.createElement('tr');
-            for (let j = 0; j < data[i].length; j++) {
-                const cell = document.createElement('td');
-                cell.textContent = data[i][j];
-                row.appendChild(cell);
-            }
-            table.appendChild(row);
-        }
+        const table = document.getElementById('dataTable');
+        table.innerHTML = '';
 
-        // Clear any existing data and add the new table to the DOM
-        const section = document.getElementById('usageHistorySection');
-        section.innerHTML = '';
-        const header = document.createElement('h2');
-        header.textContent = 'Usage History';
-        section.appendChild(header);
-        section.appendChild(table);
+        for (let i = 0; i < data.length; i++) {
+            const row = table.insertRow();
+            for (let j = 0; j < data[i].length; j++) {
+                const cell = row.insertCell();
+                cell.textContent = data[i][j];
+            }
+        }
     }
 });
