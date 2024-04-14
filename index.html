@@ -32,6 +32,19 @@
             color: rgb(166, 36, 92); /* Change link color */
             cursor: pointer; /* Change cursor to pointer */
         }
+        .data-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +59,9 @@
         </ul>
     </nav>
     <main>
+        <section id="usageHistorySection">
+            <!-- Usage history table will be inserted here -->
+        </section>
         <section>
             <h2>How to Use</h2>
             <p>Click on the "Read" button above, locate your device's logged session data CSV, and open it. The monitor will read the data and display alert results from your previous sessions.</p>
@@ -61,9 +77,6 @@
 
     <!-- Hidden file input field -->
     <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
-
-    <!-- Table to display CSV data -->
-    <table id="dataTable"></table>
 
     <!-- Include Papa Parse library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
