@@ -1,0 +1,67 @@
+/* Reset default browser styles */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* Set body background color and font color */
+body {
+    background-color: rgb(54, 88, 219); /* Blue background */
+    color: #f0f0f0; /* Off-white text color */
+    font-family: Arial, sans-serif; /* Default font family */
+}
+
+/* Header styles */
+header {
+    background-color: #fff; /* White background */
+    padding: 20px 0; /* Add padding top and bottom */
+}
+
+header img {
+    display: block; /* Center-align the logo */
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 24px; /* Large font size for header */
+    margin-top: 10px; /* Add some space above the header */
+}
+
+/* Navigation styles */
+nav ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+}
+
+nav ul li {
+    display: inline; /* Display the list items inline */
+    margin-right: 20px; /* Add space between list items */
+}
+
+nav ul li a {
+    text-decoration: none; /* Remove underline */
+    color: rgb(166, 36, 92); /* Change link color */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Main content styles */
+main {
+    padding: 20px; /* Add padding around the content */
+}
+
+section {
+    margin-bottom: 20px; /* Add space between sections */
+}
+
+h2 {
+    font-size: 20px; /* Medium font size for section headings */
+    margin-bottom: 10px; /* Add space below section headings */
+}
+
+p {
+    line-height: 1.5; /* Set line height for paragraphs */
+}
