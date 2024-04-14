@@ -62,10 +62,12 @@
     <!-- Hidden file input field -->
     <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
 
-    <script>
-        document.getElementById('uploadLink').addEventListener('click', function() {
-            document.getElementById('csvFileInput').click();
-        });
-    </script>
+    <!-- Table to display CSV data -->
+    <table id="dataTable"></table>
+
+    <!-- Include Papa Parse library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
